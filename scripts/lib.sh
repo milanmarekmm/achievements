@@ -28,7 +28,22 @@ retry() {
   done
 }
 
+# Refuse to run if the checkout points somewhere other than $REPO — otherwise the
+# scripts happily push branches into whatever repo origin happens to be.
+require_matching_origin() {
+  local origin
+  origin=$(git remote get-url origin 2>/dev/null) || return 0
+  case "$origin" in
+    *"${REPO}"*) return 0 ;;
+    *)
+      echo "ABORT: git origin is '${origin}' but REPO=${REPO}." >&2
+      echo "       Run this inside a clone of ${REPO}, or set REPO to match origin." >&2
+      exit 1 ;;
+  esac
+}
+
 require_clean_main() {
+  require_matching_origin
   git -C "$(git rev-parse --show-toplevel)" fetch -q origin main
   git checkout -q main
   git reset -q --hard origin/main
