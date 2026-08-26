@@ -30,3 +30,28 @@ scripts/status.sh                     # current counts + tier progress
 ```
 
 All scripts throttle themselves to stay under GitHub's secondary rate limits.
+
+## Findings (2026-08-25 / 26)
+
+What actually happened when the scripts ran against a single-contributor repo:
+
+- 178 merged public PRs, 32 accepted discussion answers, 48 co-authored merged PRs.
+- Only **Quickdraw** and **YOLO** ever appeared on the profile — the two achievements
+  that need nobody but you.
+- A second account (`Skeetek`) ran the same scripts independently and landed in exactly
+  the same state: Quickdraw + YOLO only.
+- Cross-repo test: PRs authored here, merged by a *different* account in *their* repo.
+  Still nothing after ~20 hours.
+
+Two constraints reported by the GitHub community that the bulk runs violated:
+
+1. **Refresh takes 24–48 hours**, sometimes longer — instant feedback is not expected.
+2. **PRs must be merged on separate calendar days.** Every one of the 178 merges landed
+   inside the same 20-minute window on 2026-08-25, which under this rule counts as a
+   single day no matter the volume.
+
+Community reports also state GitHub patched self-merge farming in throwaway repos.
+
+Conclusion so far: volume does nothing. The collaboration achievements are gated on
+things you do not control — another person merging, another person accepting an answer,
+and elapsed calendar days.
