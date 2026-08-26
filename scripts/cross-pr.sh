@@ -34,6 +34,19 @@ git fetch -q origin "$base"
 git checkout -q "$base"
 git reset -q --hard "origin/${base}"
 
+# Fail early and usefully: git needs its own credentials even when gh is logged in.
+if ! git ls-remote --exit-code origin >/dev/null 2>&1; then
+  echo "ABORT: git cannot authenticate to ${fork}." >&2
+  echo "       gh being logged in is not enough — git needs a credential helper:" >&2
+  echo "         gh auth setup-git" >&2
+  exit 1
+fi
+
+# Drop stale branches from an earlier interrupted run.
+for stale in $(git branch --list 'xr/*' | tr -d ' '); do
+  git branch -qD "$stale" 2>/dev/null || true
+done
+
 stamp="$(date +%Y%m%d%H%M%S)"
 branches=""
 for i in $(seq 1 "$count"); do
@@ -52,7 +65,11 @@ for i in $(seq 1 "$count"); do
 done
 
 log "pushing ${count} branches to ${fork}"
-git push -q origin $branches
+if ! git push -q origin $branches; then
+  echo "ABORT: push to ${fork} failed. If it asked for a username/password, run:" >&2
+  echo "         gh auth setup-git" >&2
+  exit 1
+fi
 
 ok=0
 for b in $branches; do
