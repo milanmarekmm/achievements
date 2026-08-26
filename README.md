@@ -82,3 +82,22 @@ Step 3 is the one that grants the badge, and only the person who asked can do it
 Note: this sequence has been run in full and Pull Shark still did not appear — see
 Findings above. Galaxy Brain works reliably; Pull Shark appears to be gated on
 something beyond the published criteria.
+
+### Second data point (2026-08-26)
+
+The playbook above was run in both directions between two accounts:
+
+- `milanmarekmm` → 20 PRs merged by `Skeetek` in Skeetek's repo.
+- `Skeetek` → 16 PRs merged by `milanmarekmm` in this repo.
+- All from forks, into the default branch of a non-fork repo, spread over two
+  calendar days, every PR carrying a `Co-authored-by` trailer.
+
+Galaxy Brain reached x4 (platinum) on **both** accounts within minutes of the
+answers being accepted. Pull Shark and Pair Extraordinaire appeared on **neither**.
+
+The cross-account merge is therefore not the missing ingredient. Whatever gates
+Pull Shark is not in the published criteria — the most plausible explanation is an
+anti-farming heuristic that excludes repos consisting entirely of automated PRs.
+
+Earning it likely requires a merged pull request in a repository that exists for
+some reason other than farming achievements.
