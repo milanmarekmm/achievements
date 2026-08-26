@@ -55,3 +55,30 @@ Community reports also state GitHub patched self-merge farming in throwaway repo
 Conclusion so far: volume does nothing. The collaboration achievements are gated on
 things you do not control — another person merging, another person accepting an answer,
 and elapsed calendar days.
+
+## Two-account playbook
+
+Every collaboration achievement needs a step the beneficiary cannot perform. Two
+people can cover each other by swapping roles. `A` is whoever is earning the badge.
+
+**Galaxy Brain — A earns it**
+
+| Step | Who | Command |
+|---|---|---|
+| 1. ask 32 questions in A's repo | **B** | `./scripts/ask.sh <A-repo> 32` |
+| 2. answer them | **A** | `./scripts/answer-open-questions.sh <A-repo>` |
+| 3. accept the answers | **B** | `./scripts/accept.sh <A-repo>` |
+
+Step 3 is the one that grants the badge, and only the person who asked can do it.
+
+**Pull Shark / Pair Extraordinaire — A earns it**
+
+| Step | Who | Command |
+|---|---|---|
+| 1. fork B's repo | **A** | `gh api -X POST repos/<B-repo>/forks` |
+| 2. open PRs from the fork | **A** | `COAUTHOR="B <id+B@users.noreply.github.com>" ./scripts/cross-pr.sh <B-repo> 16` |
+| 3. merge them | **B** | `./scripts/merge-open-prs.sh <B-repo>` |
+
+Note: this sequence has been run in full and Pull Shark still did not appear — see
+Findings above. Galaxy Brain works reliably; Pull Shark appears to be gated on
+something beyond the published criteria.
